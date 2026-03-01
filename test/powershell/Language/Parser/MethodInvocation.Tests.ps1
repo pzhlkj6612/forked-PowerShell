@@ -352,9 +352,11 @@ Describe 'Method not found error message preserves method name casing' -Tags 'CI
         param($First, $Second)
 
         # Call the first casing to populate the binder cache
-        { Invoke-Expression "''.${First}()" } | Should -Throw -ErrorId 'MethodNotFound' -ExceptionMessage "*'$First'*"
+        $err = { Invoke-Expression "''.${First}()" } | Should -Throw -ErrorId 'MethodNotFound' -PassThru
+        $err.Exception.Message | Should -BeLike "*'$First'*"
 
         # Call the second casing — previously the cached first casing would leak into this error message
-        { Invoke-Expression "''.${Second}()" } | Should -Throw -ErrorId 'MethodNotFound' -ExceptionMessage "*'$Second'*"
+        $err = { Invoke-Expression "''.${Second}()" } | Should -Throw -ErrorId 'MethodNotFound' -PassThru
+        $err.Exception.Message | Should -BeLike "*'$Second'*"
     }
 }
