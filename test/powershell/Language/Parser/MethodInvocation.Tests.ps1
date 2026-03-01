@@ -341,3 +341,29 @@ namespace MSFT_716893
         ([MSFT_716893.IInterface1]$proxy).BaseOperation(22) | Should -Be "3 - 22"
     }
 }
+
+Describe 'Method not found error message preserves method name casing' -Tags 'CI' {
+    It "Error message should use '<MethodName>' as typed by the user" -TestCases @(
+        @{ MethodName = 'a' }
+        @{ MethodName = 'A' }
+        @{ MethodName = 'b' }
+        @{ MethodName = 'B' }
+        @{ MethodName = 'nonExistentMethod' }
+        @{ MethodName = 'NONEXISTENTMETHOD' }
+        @{ MethodName = 'NonExistentMethod' }
+    ) {
+        param($MethodName)
+
+        $err = $null
+        try {
+            # Use Invoke-Expression to ensure each invocation compiles fresh with the given casing
+            Invoke-Expression "''.${MethodName}()"
+        } catch {
+            $err = $_
+        }
+
+        $err | Should -Not -BeNullOrEmpty
+        $err.FullyQualifiedErrorId | Should -Be 'MethodNotFound'
+        $err.Exception.Message | Should -BeLike "*'$MethodName'*"
+    }
+}
