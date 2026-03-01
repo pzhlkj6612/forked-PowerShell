@@ -6564,8 +6564,6 @@ namespace System.Management.Automation.Language
         {
             public bool Equals(PSInvokeMemberBinderKeyType x, PSInvokeMemberBinderKeyType y)
             {
-                // Use case-sensitive comparison so each casing of a method name gets its own
-                // binder, ensuring error messages preserve the method name as typed by the user.
                 return x.Item1.Equals(y.Item1, StringComparison.Ordinal)
                        && x.Item2.Equals(y.Item2)
                        && x.Item3 == y.Item3
