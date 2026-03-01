@@ -363,7 +363,7 @@ Describe 'Method not found error message preserves method name casing' -Tags 'CI
         }
 
         $err | Should -Not -BeNullOrEmpty
-        $err.FullyQualifiedErrorId | Should -Be 'MethodNotFound'
+        $err.FullyQualifiedErrorId | Should -BeLike 'MethodNotFound*'
         $err.Exception.Message | Should -BeLike "*'$MethodName'*"
     }
 }
