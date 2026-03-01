@@ -343,27 +343,18 @@ namespace MSFT_716893
 }
 
 Describe 'Method not found error message preserves method name casing' -Tags 'CI' {
-    It "Error message should use '<MethodName>' as typed by the user" -TestCases @(
-        @{ MethodName = 'a' }
-        @{ MethodName = 'A' }
-        @{ MethodName = 'b' }
-        @{ MethodName = 'B' }
-        @{ MethodName = 'nonExistentMethod' }
-        @{ MethodName = 'NONEXISTENTMETHOD' }
-        @{ MethodName = 'NonExistentMethod' }
+    It "Error message should preserve casing when calling '<Second>' after '<First>'" -TestCases @(
+        @{ First = 'a'; Second = 'A' }
+        @{ First = 'A'; Second = 'a' }
+        @{ First = 'nonExistentMethod'; Second = 'NONEXISTENTMETHOD' }
+        @{ First = 'NONEXISTENTMETHOD'; Second = 'nonExistentMethod' }
     ) {
-        param($MethodName)
+        param($First, $Second)
 
-        $err = $null
-        try {
-            # Use Invoke-Expression to ensure each invocation compiles fresh with the given casing
-            Invoke-Expression "''.${MethodName}()"
-        } catch {
-            $err = $_
-        }
+        # Call the first casing to populate the binder cache
+        { Invoke-Expression "''.${First}()" } | Should -Throw -ErrorId 'MethodNotFound' -ExceptionMessage "*'$First'*"
 
-        $err | Should -Not -BeNullOrEmpty
-        $err.FullyQualifiedErrorId | Should -BeLike 'MethodNotFound*'
-        $err.Exception.Message | Should -BeLike "*'$MethodName'*"
+        # Call the second casing — previously the cached first casing would leak into this error message
+        { Invoke-Expression "''.${Second}()" } | Should -Throw -ErrorId 'MethodNotFound' -ExceptionMessage "*'$Second'*"
     }
 }
