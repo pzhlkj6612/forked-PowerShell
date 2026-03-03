@@ -166,7 +166,7 @@ if [[ "${DISTRIB_ID}" = "linuxmint" ]]; then
         ;;
         *)
             echo "ERROR: unsupported linuxmint version (${LINUXMINT_VERSION})." >&2
-            echo "Supported versions: 19" >&2
+            echo "Supported versions: 17, 18, 19." >&2
             echo "For additional versions open an issue or pull request at: https://github.com/powershell/powershell" >&2
             exit 1
         ;;
