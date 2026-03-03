@@ -181,7 +181,7 @@ case $DISTRIB_ID in
             ;;
             *)
                 echo "ERROR: unsupported Ubuntu version ($DISTRIB_RELEASE)." >&2
-                echo "Supported versions: 14.04, 15.10, 16.04, 16.10, 18.04, 20.04." >&2
+                echo "Supported versions: 14.04, 15.10, 16.04, 16.10, 18.04, 20.04, 22.04." >&2
                 echo "For additional versions open an issue or pull request at: https://github.com/powershell/powershell" >&2
                 exit 1
             ;;
@@ -195,7 +195,7 @@ case $DISTRIB_ID in
             ;;
             *)
                 echo "ERROR: unsupported Debian version ($DISTRIB_RELEASE)." >&2
-                echo "Supported versions: 8, 9." >&2
+                echo "Supported versions: 8, 9, 10, 11." >&2
                 echo "For additional versions open an issue or pull request at: https://github.com/powershell/powershell" >&2
                 exit 1
             ;;
