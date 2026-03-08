@@ -153,7 +153,7 @@ curl https://packages.microsoft.com/keys/microsoft.asc | $SUDO apt-key add -
 if [[ "${DISTRIB_ID}" = "linuxmint" ]]; then
     echo "Attempting to remap linuxmint to an appropriate ubuntu version" >&2
     LINUXMINT_VERSION=${DISTRIB_RELEASE}
-    #https://en.wikipedia.org/wiki/Linux_Mint_version_history
+    #https://en.wikipedia.org/wiki/Linux_Mint#Release_history
     case ${LINUXMINT_VERSION} in
         19*)
             DISTRIB_RELEASE=18.04
